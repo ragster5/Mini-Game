@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class Bullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     Rigidbody2D body;
+    Vector3 player;
     public int speed = 450, damage = 20;
-    Vector3 mousePos;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
-        mousePos = Input.mousePosition;
-        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
-        Vector3 direction = (mousePos - transform.position).normalized;
+        player = GameObject.FindGameObjectWithTag("Player").transform.position;
+        Vector3 direction = (player - transform.position).normalized;
         if (Vector3.Dot(body.velocity, direction) < 0)
         {
             return;
         }
         body.AddForce(body.mass * (speed * direction));
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
     private void OnBecameInvisible()
     {
@@ -29,10 +32,10 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Enemy>().TakeDamage(damage);
-        }
+            collision.GetComponent<Player>().TakeDamage(damage);
             Destroy(gameObject);
+        }
     }
 }
