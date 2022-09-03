@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour
     GameObject player;
     NavMeshAgent agent;
     Attitudes attitude;
+    Animator anim;
+    SpriteRenderer spriteR;
 
     [Header("References")]
     public GameObject bullet;
@@ -28,6 +30,8 @@ public class Enemy : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         player = GameObject.FindGameObjectWithTag("Player");
+        anim = GetComponent<Animator>();
+        spriteR = GetComponent<SpriteRenderer>();
         StartCoroutine("RunningShooting", Attitudes.Shoot);
     }
 
@@ -37,13 +41,22 @@ public class Enemy : MonoBehaviour
         switch (attitude)
         {
             case Attitudes.Wait:
-
+                anim.SetBool("running", false);
                 break;
             case Attitudes.Run:
+                anim.SetBool("running", true);
                 agent.SetDestination(player.transform.position);
+                if(agent.velocity.x > 0)
+                {
+                    spriteR.flipX = true;
+                } else if(agent.velocity.x < 0)
+                {
+                    spriteR.flipX = false;
+                }
+                
                 break;
-
             case Attitudes.Shoot:
+                anim.SetBool("running", false);
                 agent.SetDestination(transform.position);
                 Shoot();
                 break;
