@@ -28,8 +28,15 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Controls();
-        Art();
+        if (GameController.state.Equals(Mode.PLAY))
+        {
+            Controls();
+            Art();
+        }
+        else
+        {
+            body.velocity = Vector2.zero;
+        }
     }
     void Controls()
     {

@@ -38,10 +38,16 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameController.state.Equals(Mode.WAIT))
+        {
+            attitude = Attitudes.Wait;
+        }
         switch (attitude)
         {
             case Attitudes.Wait:
                 anim.SetBool("running", false);
+                agent.SetDestination(transform.position);
+                StopCoroutine("RunningShooting");
                 break;
             case Attitudes.Run:
                 anim.SetBool("running", true);
@@ -81,7 +87,7 @@ public class Enemy : MonoBehaviour
         life -= damage;
         if(life <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     IEnumerator RunningShooting(Attitudes change)
@@ -95,5 +101,11 @@ public class Enemy : MonoBehaviour
         {
             StartCoroutine("RunningShooting", Attitudes.Shoot);
         }
+    }
+    public void StartCreature()
+    {
+        attitude = Attitudes.Run;
+        life = 100;
+        StartCoroutine("RunningShooting", Attitudes.Shoot);
     }
 }

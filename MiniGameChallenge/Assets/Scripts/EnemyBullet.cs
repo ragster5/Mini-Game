@@ -7,26 +7,25 @@ public class EnemyBullet : MonoBehaviour
 {
     Rigidbody2D body;
     Vector3 player;
-    public int speed = 450, damage = 20;
+    public int speed = 12, damage = 20;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform.position;
         Vector3 direction = (player - transform.position).normalized;
-        if (Vector3.Dot(body.velocity, direction) < 0)
-        {
-            return;
-        }
-        body.AddForce(body.mass * (speed * direction));
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-        body.rotation = angle;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+        body.velocity = transform.up * speed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (GameController.state.Equals(Mode.WAIT))
+        {
+            Destroy(gameObject);
+        }
     }
     private void OnBecameInvisible()
     {
@@ -40,4 +39,5 @@ public class EnemyBullet : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
 }

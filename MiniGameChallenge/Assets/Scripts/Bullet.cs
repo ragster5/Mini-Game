@@ -6,7 +6,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     Rigidbody2D body;
-    public int speed = 450, damage = 20;
+    public int speed = 12, damage = 20;
     Vector3 mousePos;
     // Start is called before the first frame update
     void Start()
@@ -16,14 +16,17 @@ public class Bullet : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
         Vector3 direction = (mousePos - transform.position).normalized;
-        if (Vector3.Dot(body.velocity, direction) < 0)
-        {
-            return;
-        }
-        body.AddForce(body.mass * (speed * direction));
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-        body.rotation = angle;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+        body.velocity = transform.up * speed;
 
+    }
+    private void Update()
+    {
+        if (GameController.state.Equals(Mode.WAIT))
+        {
+            Destroy(gameObject);
+        }
     }
     private void OnBecameInvisible()
     {
