@@ -127,8 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 100
-  fireRate: 1.2
-  timeRunning: 1
+  fireRate: 1
+  timeRunning: 1.5
   bullet: {fileID: 5820916517168833799, guid: 09468817fe0d1f5428ec226510291166, type: 3}
 --- !u!195 &6985147415129829058
 NavMeshAgent:
