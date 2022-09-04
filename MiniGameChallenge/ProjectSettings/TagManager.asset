@@ -16,8 +16,8 @@ TagManager:
   - Enemy
   - PlayerBullet
   - EnemyBullet
-  - 
-  - 
+  - IgnoreBullets
+  - IgnorePlayer
   - 
   - 
   - 
@@ -47,4 +47,7 @@ TagManager:
     locked: 0
   - name: Characters
     uniqueID: 1227066507
+    locked: 0
+  - name: Effects
+    uniqueID: 3242355935
     locked: 0

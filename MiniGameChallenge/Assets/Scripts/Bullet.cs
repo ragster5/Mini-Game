@@ -21,6 +21,8 @@ public class Bullet : MonoBehaviour
             return;
         }
         body.AddForce(body.mass * (speed * direction));
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+        body.rotation = angle;
 
     }
     private void OnBecameInvisible()

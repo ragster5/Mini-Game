@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D body;
     GameController gc;
+    Animator anim;
+    Vector3 mousePos;
 
     float horizontal, vertical, timerToShoot;
     public float speed = 3, fireRate = 1;
@@ -17,6 +19,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         gc = FindObjectOfType(typeof(GameController)) as GameController;
         body = GetComponent<Rigidbody2D>();
         timerToShoot = fireRate;
@@ -26,6 +29,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Controls();
+        Art();
     }
     void Controls()
     {
@@ -39,6 +43,27 @@ public class Player : MonoBehaviour
             GameObject tempPrefab = Instantiate(bullet);
             tempPrefab.transform.position = gun.transform.position;
             timerToShoot = 0;
+        }
+
+        mousePos = Input.mousePosition;
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+    }
+    void Art()
+    {
+        anim.SetBool("running", horizontal != 0 || vertical != 0);
+        if (mousePos.x > 0)
+        {
+            if (transform.localScale.x < 0)
+            {
+                transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
+            }
+        }
+        else if (mousePos.x < 0)
+        {
+            if (transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
+            }
         }
     }
     public void TakeDamage(int damage)

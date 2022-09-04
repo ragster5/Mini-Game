@@ -19,6 +19,8 @@ public class EnemyBullet : MonoBehaviour
             return;
         }
         body.AddForce(body.mass * (speed * direction));
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+        body.rotation = angle;
     }
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class EnemyBullet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<Player>().TakeDamage(damage);
-            Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
 }
